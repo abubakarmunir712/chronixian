@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { AddSubtaskForm } from "./AddSubTaskForm";
 import { SubtaskList } from "./SubTaskList";
-import { Trash2, Edit2, Save, Clock } from "lucide-react";
+import { Edit2, Save, Clock } from "lucide-react";
 import type { Task } from "@/types/types";
 import { DatePicker } from "./DatePicker";
+import { DeleteDialog } from "./DeleteDialog";
 
 interface TaskCardProps {
   task: Task;
@@ -28,13 +29,15 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, tasks, setTasks }) => 
     setIsEditing(false);
   };
 
-  // Deadline color logic
+  // Deadline + remaining days logic
   const today = new Date();
   const taskDeadline = new Date(task.deadline);
+  const diffMs = taskDeadline.getTime() - today.setHours(0, 0, 0, 0);
+  const remainingDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
   let deadlineColor = "text-green-400";
-  if (taskDeadline < today) deadlineColor = "text-red-500";
-  else if ((taskDeadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24) <= 3)
-    deadlineColor = "text-yellow-400";
+  if (remainingDays < 0) deadlineColor = "text-red-500";
+  else if (remainingDays <= 3) deadlineColor = "text-yellow-400";
 
   return (
     <div className="bg-card/80 p-4 rounded-xl shadow-md flex flex-col gap-4 border border-white/10">
@@ -56,9 +59,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, tasks, setTasks }) => 
             {isEditing ? (
               <DatePicker date={editedDeadline} setDate={setEditedDeadline} />
             ) : (
-              <p className={`text-sm ${deadlineColor}`}>
-                {taskDeadline.toLocaleDateString()}
-              </p>
+              <div className="flex gap-2 items-center">
+                <p className={`text-sm ${deadlineColor}`}>
+                  {taskDeadline.toLocaleDateString()}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {remainingDays < 0
+                    ? `Overdue by ${Math.abs(remainingDays)} day(s)`
+                    : remainingDays === 0
+                    ? "Due today"
+                    : `${remainingDays} day(s) left`}
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -80,13 +92,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, tasks, setTasks }) => 
               <Edit2 className="h-4 w-4 text-blue-500" />
             </button>
           )}
-
-          <button
-            onClick={handleDelete}
-            className="p-2 rounded-md bg-destructive/20 hover:bg-destructive/30 transition-colors flex items-center justify-center"
-          >
-            <Trash2 className="h-4 w-4 text-destructive" />
-          </button>
+          <DeleteDialog onConfirm={handleDelete} />
         </div>
       </div>
 

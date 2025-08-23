@@ -3,13 +3,15 @@ import { AddTaskForm } from "@/components/tasks/AddTaskForm";
 import { TaskList } from "@/components/tasks/TaskList";
 import type { Task } from "@/types/types";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Toaster } from "@/components/ui/sonner"
+
 
 function App() {
   const [tasks, setTasks] = useLocalStorage<Task[]>("chronixian-tasks", []);
 
   return (
     <div className="min-h-screen flex flex-col items-center p-6 bg-background text-foreground relative overflow-hidden">
-
+      <Toaster />
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 w-[80rem] h-[60rem] bg-gradient-radial from-primary/10 via-transparent to-accent/10 rounded-full -translate-x-1/2 pointer-events-none"></div>
 

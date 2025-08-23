@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Task, Subtask } from "@/types/types";
 import { DatePicker } from "./DatePicker";
+import { toast } from "sonner"
 
 interface AddSubtaskFormProps {
   task: Task;
@@ -18,13 +19,30 @@ export const AddSubtaskForm: React.FC<AddSubtaskFormProps> = ({
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState<Date | undefined>(undefined);
 
+  const normalizeDate = (d: Date) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
   const handleAdd = () => {
     if (!title) return;
+    if (!deadline) return;
+
+    const parentDeadline = normalizeDate(new Date(task.deadline));
+    const subtaskDeadline = normalizeDate(deadline);
+
+    console.log(parentDeadline)
+    console.log(subtaskDeadline)
+
+
+    if (subtaskDeadline > parentDeadline) {
+      toast.error("Subtask deadline cannot be later than the parent task deadline!");
+      return;
+    }
+
     const newSubtask: Subtask = {
       id: Date.now().toString(),
       title,
       completed: false,
-      deadline: deadline ? deadline.toISOString() : new Date().toISOString(),
+      deadline: deadline.toISOString(),
     };
 
     const updatedTasks = tasks.map((t) =>
@@ -34,6 +52,7 @@ export const AddSubtaskForm: React.FC<AddSubtaskFormProps> = ({
     );
 
     setTasks(updatedTasks);
+    toast.success("Task added successfully!");
     setTitle("");
     setDeadline(undefined);
   };

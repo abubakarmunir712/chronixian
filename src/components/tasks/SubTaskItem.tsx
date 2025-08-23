@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { Task, Subtask } from "@/types/types";
-import { Trash2, Calendar, Pencil, Check } from "lucide-react";
+import { Calendar, Pencil, Check } from "lucide-react";
 import { DatePicker } from "./DatePicker";
+import { DeleteDialog } from "./DeleteDialog";
 
 interface SubtaskItemProps {
     subtask: Subtask;
@@ -65,12 +66,15 @@ export const SubtaskItem: React.FC<SubtaskItemProps> = ({
         setIsEditing(false);
     };
 
-    // deadline color logic
+    // deadline logic
     const today = new Date();
+    const diffDays = Math.ceil(
+        (deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
     let deadlineColor = "text-green-400";
     if (deadline < today) deadlineColor = "text-red-500";
-    else if ((deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24) <= 2)
-        deadlineColor = "text-yellow-400";
+    else if (diffDays <= 2) deadlineColor = "text-yellow-400";
 
     return (
         <div className="flex justify-between items-start bg-muted/50 p-4 mb-2 rounded-md gap-3">
@@ -88,10 +92,20 @@ export const SubtaskItem: React.FC<SubtaskItemProps> = ({
 
                 {/* Deadline */}
                 <div className="flex items-center gap-2 text-sm">
-                    {!isEditing ? (<>
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className={deadlineColor}>{deadline.toLocaleDateString()}</span>
-                    </>
+                    {!isEditing ? (
+                        <>
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <span className={deadlineColor}>
+                                {deadline.toLocaleDateString()}{" "}
+                                <span className="ml-2 text-xs text-muted-foreground">
+                                    {diffDays < 0
+                                        ? `${Math.abs(diffDays)} day(s) overdue`
+                                        : diffDays === 0
+                                            ? "Today"
+                                            : `${diffDays} day(s) left`}
+                                </span>
+                            </span>
+                        </>
                     ) : (
                         <DatePicker date={deadline} setDate={handleDeadlineChange} />
                     )}
@@ -111,13 +125,7 @@ export const SubtaskItem: React.FC<SubtaskItemProps> = ({
                     )}
                 </button>
 
-                {/* Delete */}
-                <button
-                    onClick={handleDelete}
-                    className="p-2 rounded-md bg-destructive/20 hover:bg-destructive/30 transition-colors flex items-center justify-center"
-                >
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                </button>
+                <DeleteDialog onConfirm={handleDelete} />
             </div>
         </div>
     );

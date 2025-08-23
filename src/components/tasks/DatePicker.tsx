@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -10,8 +11,10 @@ interface DatePickerProps {
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({ date, setDate }) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -31,6 +34,12 @@ export const DatePicker: React.FC<DatePickerProps> = ({ date, setDate }) => {
             const year = d.getFullYear().toString();
             if (year.length > 4) return; // Prevent unrealistic year
             setDate(d);
+            setOpen(false); // close popover after selecting
+          }}
+          disabled={(d) => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // normalize to midnight
+            return d < today;
           }}
         />
       </PopoverContent>
