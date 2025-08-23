@@ -1,1 +1,30 @@
-@import "tailwindcss";
+@theme {
+  /* Background */
+  --color-bg-900: oklch(0.15 0 0);   /* almost black */
+  --color-bg-800: oklch(0.22 0 0);   /* dark panel */
+  --color-bg-700: oklch(0.3 0 0);    /* lighter dark */
+
+  /* Primary (blue neon) */
+  --color-primary-100: oklch(0.95 0.05 230);
+  --color-primary-200: oklch(0.85 0.12 230);
+  --color-primary-400: oklch(0.78 0.18 230);
+  --color-primary-500: oklch(0.7 0.22 230);
+  --color-primary-600: oklch(0.6 0.22 230);
+
+  /* Accent (green neon) */
+  --color-accent-100: oklch(0.95 0.06 150);
+  --color-accent-200: oklch(0.88 0.12 150);
+  --color-accent-400: oklch(0.85 0.18 150);
+  --color-accent-500: oklch(0.75 0.22 150);
+  --color-accent-600: oklch(0.65 0.22 150);
+
+  /* Secondary Accent (pink pop for contrast) */
+  --color-secondary-200: oklch(0.9 0.15 350);
+  --color-secondary-400: oklch(0.8 0.22 350);
+  --color-secondary-500: oklch(0.7 0.25 350);
+
+  /* Neutral text */
+  --color-text-100: oklch(0.95 0 0);
+  --color-text-300: oklch(0.75 0 0);
+  --color-text-500: oklch(0.55 0 0);
+}
