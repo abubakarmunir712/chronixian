@@ -1,11 +1,13 @@
-export interface Subtask {
-    id: number;
+export type Task = {
+    id: string;
     title: string;
-  }
-  
-  export interface Task {
-    id: number;
-    title: string;
+    deadline: string; // ISO date string
     subtasks: Subtask[];
-  }
-  
+};
+
+export type Subtask = {
+    id: string;
+    title: string;
+    deadline: string; // ISO date string
+    completed: boolean;
+};

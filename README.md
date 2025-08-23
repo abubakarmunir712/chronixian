@@ -1,69 +1,30 @@
-# React + TypeScript + Vite
+# Chronixian
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Chronixian is a dark-themed, TypeScript React task management app with tasks, subtasks, and localStorage persistence, built with a vibe coding approach.
 
-Currently, two official plugins are available:
+## Features
+- Add, edit, delete tasks & subtasks
+- Nested subtasks under tasks
+- LocalStorage persistence
+- Dark-themed glassmorphism design
+- Fully typed with TypeScript
+- Ready for JSON import/export
+- Uses Shadcn UI and React Icons
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- React + TypeScript
+- Tailwind CSS v4.1
+- Shadcn UI
+- React Icons
 
-## Expanding the ESLint configuration
+## Getting Started
+Clone the repo, install dependencies and run the development server: git clone <repo-url> && cd chronixo && npm install && npm run dev. Then open http://localhost:5173 in your browser.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Folder Structure
+src/ ├─ components/ │ ├─ ui/          ← reusable shadcn components │ └─ tasks/       ← app-specific task components ├─ hooks/           ← custom hooks (e.g., useLocalStorage) ├─ types/           ← TypeScript types ├─ App.tsx          ← main app component └─ main.tsx         ← entry point
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Usage
+Add new tasks using the input at the top. Click a task to view subtasks and add/edit/delete them. All tasks persist in localStorage automatically.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## License
+MIT License
