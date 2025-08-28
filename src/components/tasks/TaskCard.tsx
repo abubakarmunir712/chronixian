@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AddSubtaskForm } from "./AddSubTaskForm";
 import { SubtaskList } from "./SubTaskList";
-import { Edit2, Save, Clock } from "lucide-react";
+import { Edit2, Save, Clock, ChevronDown, ChevronRight } from "lucide-react";
 import type { Task } from "@/types/types";
 import { DatePicker } from "./DatePicker";
 import { DeleteDialog } from "./DeleteDialog";
@@ -16,6 +16,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, tasks, setTasks }) => 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
   const [editedDeadline, setEditedDeadline] = useState(new Date(task.deadline));
+  const [showSubtasks, setShowSubtasks] = useState(false);
 
   const handleDelete = () => setTasks(tasks.filter(t => t.id !== task.id));
 
@@ -96,12 +97,30 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, tasks, setTasks }) => 
         </div>
       </div>
 
-      {/* Separator line before subtasks */}
-      {task.subtasks.length ? (
-        <hr className="border-t border-green-950 my-2" />
-      ) : null}
+      {/* Subtasks toggle */}
+      {task.subtasks.length > 0 && (
+        <button
+          onClick={() => setShowSubtasks(!showSubtasks)}
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+        >
+          {showSubtasks ? (
+            <ChevronDown className="h-4 w-4" />
+          ) : (
+            <ChevronRight className="h-4 w-4" />
+          )}
+          Subtasks ({task.subtasks.length})
+        </button>
+      )}
 
-      <SubtaskList task={task} tasks={tasks} setTasks={setTasks} />
+      {/* Collapsible subtasks */}
+      {showSubtasks && (
+        <div className="mt-2">
+          {/* <hr className="border-t border-green-950 my-2" /> */}
+          <SubtaskList task={task} tasks={tasks} setTasks={setTasks} />
+        </div>
+      )}
+
+      {/* Always allow adding new subtasks */}
       <AddSubtaskForm task={task} tasks={tasks} setTasks={setTasks} />
     </div>
   );

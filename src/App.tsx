@@ -23,12 +23,12 @@ function App() {
       </div>
 
       {/* Add Task Form */}
-      <div className="w-full max-w-10/12 mb-6 z-10 relative">
+      <div className="w-full md:max-w-10/12 mb-6 z-10 relative">
         <AddTaskForm tasks={tasks} setTasks={setTasks} />
       </div>
 
       {/* Task List */}
-      <div className="w-full max-w-10/12 z-10 relative">
+      <div className="w-full md:max-w-10/12 z-10 relative">
         <TaskList tasks={tasks} setTasks={setTasks} />
       </div>
     </div>
